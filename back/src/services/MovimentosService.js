@@ -18,7 +18,7 @@ module.exports = {
             movimentacao = await Movimentacoes.create({
               quantidade, fornecedor, data, valor, isPago  
             });
-
+            res.status(201);
             return res.json(movimentacao);
         }
         catch(error){
