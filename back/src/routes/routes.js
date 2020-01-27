@@ -1,16 +1,22 @@
 const { Router } = require('express');
 const MovimentosController = require('../controllers/MovimentosController');
-const LoginController = require('../controllers/LoginController');
-
+const ADMController = require('../controllers/ADMController');
+const Verify = require('../services/VerifyService');
+var bodyParser = require('body-parser');
 const routes = Router();
 
-routes.get('/movimentos', MovimentosController.index);
+routes.use(bodyParser.urlencoded({ extended: false }));
+routes.use(bodyParser.json());
+
+
+
+routes.get('/movimentos',Verify.verify, MovimentosController.index);
 
 routes.post('/movimentos', MovimentosController.criar);
 
-routes.post('/sigin', LoginController.signIn);
+routes.post('/signin', ADMController.signIn);
 
-routes.post('/login', LoginController.logIn);
+routes.post('/login', ADMController.logIn);
 
 
 module.exports = routes;

@@ -1,5 +1,8 @@
 const Adm = require('../models/ADMSchema');
 const bcrypt = require('bcrypt');
+const bodyParser = require('body-parser');
+const jwt = require('jsonwebtoken');
+const config = require('../config');
 
 module.exports = {
     async signIn(req, res) {
@@ -19,7 +22,11 @@ module.exports = {
                 login,
                 pswd: hashedPswd
             });
-            res.status(201);
+            const token = jwt.sign({ id: newAdm._id }, config.secret, {
+                expiresIn: 86400
+            });
+
+            res.status(201).send({ auth: true, token: token });
            return res.json(newAdm.nome +' seu login é: '+ newAdm.login )
         } catch (error) {
             console.log(error);
@@ -32,12 +39,14 @@ module.exports = {
         const adm = await Adm.findOne({"login": login});
         
         try {
-            const itsOK = await bcrypt.compare(pswd, adm.pswd);
-            if (itsOK) {
-                res.status(200);
-                return  res.redirect('/movimentos');
+            const pswdValid = await bcrypt.compare(pswd, adm.pswd);
+            if (pswdValid) {
+                const token = jwt.sign( { id: adm._id }, config.secret, {
+                    expiresIn: 120
+                });      
+                return  res.status(200).send({ auth: true, token});
             }else {
-                res.status(400);
+                res.status(400).send({ auth: false, token: null });
                 return res.json("senha ou login inválidos");
             }
         } catch (error) {
