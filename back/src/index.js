@@ -6,7 +6,6 @@ const session = require('express-session');
 const dotenv = require('dotenv');
 dotenv.config();
 
-
 const app = express();
 
 mongoose.connect(process.env.MONGO_CONNECCTION, {
@@ -15,14 +14,13 @@ mongoose.connect(process.env.MONGO_CONNECCTION, {
     useCreateIndex: true,
 })
 
-
 app.use(cors());
 app.use(express.json());
 app.use(routes);
 app.use(session({
-    secret:process.env.KEY, 
-    saveUninitialized:true, 
+    secret: process.env.KEY,
+    saveUninitialized: true,
     resave: true,
-    cookie: {maxAge: 3600000}
+    cookie: { maxAge: 3600000 }
 }))
 app.listen(process.env.PORT);

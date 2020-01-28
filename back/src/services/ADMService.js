@@ -1,51 +1,50 @@
 const Adm = require('../models/ADMSchema');
 const bcrypt = require('bcrypt');
-const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const config = require('../config');
 
 module.exports = {
     async signIn(req, res) {
-        const { nome, login, pswd } = req.body; 
-        const adm = await Adm.findOne({"nome": nome});
+        const { nome, login, pswd } = req.body;
+        const adm = await Adm.findOne({ "nome": nome });
 
-        if(adm){
+        if (adm) {
             res.status(409);
             return res.json('Usuário já existente!');
         }
 
         try {
             // o bcrypt entende q o 10 como numero de rodadas do gensalt
-            const hashedPswd =  await bcrypt.hash(pswd, 10);
+            const hashedPswd = await bcrypt.hash(pswd, 10);
             newAdm = await Adm.create({
                 nome,
                 login,
                 pswd: hashedPswd
             });
             const token = jwt.sign({ id: newAdm._id }, config.secret, {
-                expiresIn: 86400
+                expiresIn: 600
             });
 
             res.status(201).send({ auth: true, token: token });
-           return res.json(newAdm.nome +' seu login é: '+ newAdm.login )
+            return res.json(newAdm.nome + ' seu login é: ' + newAdm.login)
         } catch (error) {
             console.log(error);
             res.status(500);
         }
-        
+
     },
     async logIn(req, res) {
         const { login, pswd } = req.body;
-        const adm = await Adm.findOne({"login": login});
-        
+        const adm = await Adm.findOne({ "login": login });
+
         try {
             const pswdValid = await bcrypt.compare(pswd, adm.pswd);
             if (pswdValid) {
-                const token = jwt.sign( { id: adm._id }, config.secret, {
-                    expiresIn: 120
-                });      
-                return  res.status(200).send({ auth: true, token});
-            }else {
+                const token = jwt.sign({ id: adm._id }, config.secret, {
+                    expiresIn: 6000
+                });
+                return res.status(200).send({ auth: true, token });
+            } else {
                 res.status(400).send({ auth: false, token: null });
                 return res.json("senha ou login inválidos");
             }
