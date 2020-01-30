@@ -10,7 +10,7 @@ module.exports = {
         jwt.verify(token, config.secret, (err, decoded) => {
             if (err) return res.status(403).send({ auth: false, message: 'falha ao autenticar o token.' });
 
-            req.admId = decoded.id;
+            req.body.admId = decoded.id;
             next();
         });
 

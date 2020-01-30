@@ -2,11 +2,11 @@ const Movimentacoes = require('../models/MovimentacaoSchema');
 
 module.exports = {
     async create(req, res) {
-        const { quantidade, fornecedor, valor, isPago } = req.body;
+        const { admId, quantidade, fornecedor, valor, isPago } = req.body;
         const data = new Date();
         try {
             movimentacao = await Movimentacoes.create({
-                quantidade, fornecedor, data, valor, isPago
+                admId, quantidade, fornecedor, data, valor, isPago
             });
             res.status(201);
             return res.json(movimentacao);
@@ -16,8 +16,9 @@ module.exports = {
         }
     },
     async index(req, res) {
+        const { admId } = req.body;
         try {
-            const movimentacoes = await Movimentacoes.find();
+            const movimentacoes = await Movimentacoes.find({ "admId": admId });
             return res.json(movimentacoes);
         }
         catch (error) {
