@@ -26,6 +26,21 @@ module.exports = {
             return res.status(500).send("erro ao buscar dados.");
         }
     },
+    async findById(req, res) {
+        const  movimentacaoId = req.params.id;
+        if(movimentacaoId) {
+            try {
+                const movimentacoes = await Movimentacoes.findOne({ "_id": movimentacaoId });
+                return res.json(movimentacoes);
+            }
+            catch (error) {
+                console.log(error);
+                return res.status(500).send("erro ao buscar dados.");
+            }
+        } else {
+            return res.status(400).send("id nulo");
+        }
+    },
     async update(req, res) {
         const { _id, quantidade, fornecedor, valor, isPago } = req.body;
         try {
