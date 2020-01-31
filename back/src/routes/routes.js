@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const MovimentosController = require('../controllers/MovimentosController');
+const NotasController = require('../controllers/NotasController');
 const ADMController = require('../controllers/ADMController');
 const Verify = require('../services/VerifyService');
 var bodyParser = require('body-parser');
@@ -13,15 +13,15 @@ routes.get('/api-docs', swaggerUi.setup(swaggerDocument));
 routes.use(bodyParser.urlencoded({ extended: false }));
 routes.use(bodyParser.json());
 
-routes.get('/notas', Verify.verify, MovimentosController.index);
+routes.get('/notas', Verify.verify, NotasController.index);
 
-routes.get('/notas/:id', Verify.verify, MovimentosController.findById);
+routes.get('/notas/:id', Verify.verify, NotasController.findById);
 
-routes.post('/notas', Verify.verify, MovimentosController.create);
+routes.post('/notas', Verify.verify, NotasController.create);
 
-routes.patch('/notas', Verify.verify, MovimentosController.update);
+routes.patch('/notas/:id', Verify.verify, NotasController.update);
 
-routes.delete('/notas', Verify.verify, MovimentosController.delete);
+routes.delete('/notas', Verify.verify, NotasController.delete);
 
 routes.post('/signin', ADMController.signIn);
 
