@@ -17,10 +17,4 @@ mongoose.connect(process.env.MONGO_CONNECCTION, {
 app.use(cors());
 app.use(express.json());
 app.use(routes);
-app.use(session({
-    secret: process.env.KEY,
-    saveUninitialized: true,
-    resave: true,
-    cookie: { maxAge: 3600000 }
-}))
 app.listen(process.env.PORT);

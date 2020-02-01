@@ -1,7 +1,6 @@
 const Adm = require('../models/ADMSchema');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const config = require('../config');
 
 module.exports = {
     async signIn(req, res) {
@@ -21,7 +20,7 @@ module.exports = {
                 login,
                 pswd: hashedPswd
             });
-            const token = jwt.sign({ id: newAdm._id }, config.secret, {
+            const token = jwt.sign({ id: newAdm._id }, process.env.secret, {
                 expiresIn: 600
             });
 
@@ -40,7 +39,7 @@ module.exports = {
         try {
             const pswdValid = await bcrypt.compare(pswd, adm.pswd);
             if (pswdValid) {
-                const token = jwt.sign({ id: adm._id }, config.secret, {
+                const token = jwt.sign({ id: adm._id }, process.env.secret, {
                     expiresIn: 6000
                 });
                 return res.status(200).send({ auth: true, token });

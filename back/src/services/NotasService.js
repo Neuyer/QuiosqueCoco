@@ -18,8 +18,8 @@ module.exports = {
     async index(req, res) {
         const { admId } = req.body;
         try {
-            const Notas = await Notas.find({ "admId": admId });
-            return res.json(Notas);
+            const notas = await Notas.find({ "admId": admId });
+            return res.json(notas);
         }
         catch (error) {
             console.log(error);
@@ -53,7 +53,7 @@ module.exports = {
                 if (valor) nota.valor = valor;
                 nota.isPago = isPago;
                 try {
-                    await Notas.updateOne({ '_id': _id }, nota);
+                    await Notas.updateOne({ '_id': notaId }, nota);
                     return res.json(nota);
                 } catch (error) {
                     console.log(error)
@@ -67,19 +67,23 @@ module.exports = {
         }
     },
     async delete(req, res) {
-        const { _id } = req.body;
-        try {
-            nota = await Notas.findOne({ '_id': _id });
-            console.log(nota)
-            if (!nota) return res.status(409).send("movimentação já excluída.");
+        const notaId = req.params.id;
+        if (notaId) {
             try {
-                await Notas.deleteOne({ '_id': _id });
-                return res.status(200).send("movimentação excluída com sucesso.");
+                nota = await Notas.findOne({ '_id': notaId });
+                console.log(nota)
+                if (!nota) return res.status(409).send("movimentação já excluída.");
+                try {
+                    await Notas.deleteOne({ '_id': notaId });
+                    return res.status(200).send("movimentação excluída com sucesso.");
+                } catch (error) {
+                    res.status(500).send("erro ao excluir a movimentação.");
+                }
             } catch (error) {
-                res.status(500).send("erro ao excluir a movimentação.");
+                res.status(404).send("movimentação não encontrada.");
             }
-        } catch (error) {
-            res.status(404).send("movimentação não encontrada.");
+        } else {
+            return res.status(400).send("id nulo");
         }
     },
 }

@@ -10,9 +10,6 @@ const routes = Router();
 routes.use('/api-docs', swaggerUi.serve);
 routes.get('/api-docs', swaggerUi.setup(swaggerDocument));
 
-routes.use(bodyParser.urlencoded({ extended: false }));
-routes.use(bodyParser.json());
-
 routes.get('/notas', Verify.verify, NotasController.index);
 
 routes.get('/notas/:id', Verify.verify, NotasController.findById);
