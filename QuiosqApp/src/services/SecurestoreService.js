@@ -1,10 +1,19 @@
-import SecureStore from 'expo-secure-store';
+import * as SecureStore from 'expo-secure-store';
 
 module.exports = {
-    store_token : async (USER_TOKEN, token) => {
-        await SecureStore.setItemAsync(USER_TOKEN, token);
+    store_token: async (STORED_TOKEN, token) => {
+        try {
+            await SecureStore.setItemAsync(STORED_TOKEN, token);
+        } catch (error) {
+            console.error(error);
+        }
     },
-    get_token : async (USER_TOKEN) => {
-        return await SecureStore.getItemAsync(USER_TOKEN);
+    get_token: async (STORED_TOKEN) => {
+        try {
+            const token = await SecureStore.getItemAsync(STORED_TOKEN);
+            return token;
+        } catch (error) {
+            console.error(error)
+        }
     }
 }

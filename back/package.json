@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "nodemon src/index.js",
     "debug": "nodemon --inspect src/index.js",
-    "build": "add nodemon && add cors"
+    "start": "node src/index.js"
   },
   "dependencies": {
     "axios": "^0.19.2",
