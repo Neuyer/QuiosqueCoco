@@ -3,6 +3,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 
 import Login from './pages/Login';
 import Notas from './pages/Notas';
+import SignIn from './pages/SignIn';
 
 const Routes = createAppContainer(createStackNavigator({
     Login: {
@@ -10,7 +11,7 @@ const Routes = createAppContainer(createStackNavigator({
         navigationOptions: {
             title: 'Login QuiosqApp',
             headerStyle: {
-                backgroundColor: '#000000',
+                backgroundColor: '#000',
             },
             headerTintColor: '#fff',
             headerTitleStyle: {
@@ -23,7 +24,20 @@ const Routes = createAppContainer(createStackNavigator({
         navigationOptions: {
             title: 'Notas',
             headerStyle: {
-                backgroundColor: '#000000',
+                backgroundColor: '#000',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+                fontWeight: 'bold',
+            },
+        },
+    },
+    SignIn : {
+          screen: SignIn,
+          navigationOptions: {
+            title: 'SignIn',
+            headerStyle:{
+                backgroundColor: '#000',
             },
             headerTintColor: '#fff',
             headerTitleStyle: {

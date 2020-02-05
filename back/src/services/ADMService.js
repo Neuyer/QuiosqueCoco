@@ -5,11 +5,11 @@ const jwt = require('jsonwebtoken');
 module.exports = {
     async signIn(req, res) {
         const { nome, login, pswd } = req.body;
-        const adm = await Adm.findOne({ "nome": nome });
+        const adm = await Adm.findOne({'login': login });
 
         if (adm) {
             res.status(409);
-            return res.json('Usuário já existente!');
+            return res.json('Login já existente!');
         }
 
         try {

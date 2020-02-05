@@ -2,7 +2,6 @@ const { Router } = require('express');
 const NotasController = require('../controllers/NotasController');
 const ADMController = require('../controllers/ADMController');
 const Verify = require('../services/VerifyService');
-var bodyParser = require('body-parser');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('../../swagger.json');
 const routes = Router();

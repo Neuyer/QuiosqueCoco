@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { KeyboardAvoidingView, TextInput, Button } from 'react-native';
-import { StyleSheet } from 'react-native';
-import Loginservice from '../services/Loginservice'
+import { KeyboardAvoidingView, TextInput, Text, TouchableOpacity, StyleSheet } from 'react-native';
+
+import Loginservice from '../services/LoginService'
 
 function Login({ navigation }) {
 
@@ -13,6 +13,10 @@ function Login({ navigation }) {
         if (response) {
             navigation.navigate('Notas');
         }
+    }
+
+    const goToSignIn = () => {
+        navigation.navigate('SignIn');
     }
 
     return (
@@ -37,11 +41,15 @@ function Login({ navigation }) {
                 placeholder='senha'
                 style={styles.input}
             />
-            <Button
+            <TouchableOpacity
+                style={{ width: '70%' }}
                 onPress={tryLogin}
-                title={'login'}
-                style={styles.input}
-            />
+                title={'login'}>
+                <Text style={styles.touchable}>Login</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={goToSignIn}>
+                <Text style={styles.sign_in}>não possui uma conta ?</Text>
+            </TouchableOpacity>
         </KeyboardAvoidingView>
     );
 }
@@ -63,6 +71,24 @@ const styles = StyleSheet.create({
         paddingLeft: '5%',
         width: '70%',
     },
+    touchable: {
+        borderRadius: 5,
+        backgroundColor: '#3cabde',
+        borderColor: '#fff',
+        color: '#fff',
+        fontSize: 24,
+        fontWeight: 'bold',
+        height: 50,
+        paddingTop: 7,
+        marginBottom: 20,
+        textAlign: "center",
+        width: '100%',
+    },
+    sign_in: {
+        fontSize: 18,
+        color: '#fff',
+        textDecorationLine: "underline",
+    }
 });
 
 export default Login;
