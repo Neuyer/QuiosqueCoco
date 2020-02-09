@@ -27,11 +27,13 @@ module.exports = {
         }
     },
     async findById(req, res) {
+        console.log('find by id');
+        
         const notaId = req.params.id;
         if (notaId) {
             try {
-                const Notas = await Notas.findOne({ "_id": notaId });
-                return res.json(Notas);
+                const Nota = await Notas.findOne({ "_id": notaId });
+                return res.json(Nota);
             }
             catch (error) {
                 console.log(error);
@@ -42,8 +44,10 @@ module.exports = {
         }
     },
     async update(req, res) {
+        console.log('update by id');
         const { quantidade, fornecedor, valor, isPago } = req.body;
         const notaId = req.params.id;
+        console.log(notaId)
         if (notaId) {
             try {
                 nota = await Notas.findOne({ '_id': notaId });
@@ -67,6 +71,7 @@ module.exports = {
         }
     },
     async delete(req, res) {
+        console.log('delete by id')
         const notaId = req.params.id;
         if (notaId) {
             try {

@@ -2,65 +2,87 @@ import React, { useState } from 'react';
 import Toast from 'react-native-simple-toast';
 import { KeyboardAvoidingView, TextInput, StyleSheet, TouchableOpacity, Text } from 'react-native';
 
-import { minLength, equals } from '../utils/ValidaInput';
+import { minLength, equals, checkForm } from '../utils/ValidaInput';
 import Loginservice from '../services/LoginService';
 
 function SignIn({ navigation }) {
 
-    const [alerta, setAlerta] = useState('');
+    const ALERTA_CARACTERES = 'mínimo de 4 caracteres';
+    const ALERTA_PSWD = 'as senhas devem coincidir';
+
     const [nome, setNome] = useState('');
-    const [login, setLogin] = useState('');
     const [pswd, setPswd] = useState('');
+    const [login, setLogin] = useState('');
+    const [alertaNome, setAlertaNome] = useState('');
+    const [alertaPswd, setAlertaPswd] = useState('');
+    const [alertaLogin, setAlertaLogin] = useState('');
     const [pswdConfirm, setPswdConfirm] = useState('')
+    const [alertaPswdConfirm, setAlertaPswdConfirm] = useState('');
 
     const trySignin = async () => {
-        const response = await Loginservice.signin(nome, login, pswd);
-        Toast.show('ajhsdgfahjsdgfjhgasjdfjaksdf')
-        console.log(response);
-        if (response) {
-            console.log("entrou")
-            navigation.navigate('Notas');
+        if (checkForm([nome, login, pswd]) && equals(pswd, pswdConfirm)) {
+            try {
+                const response = await Loginservice.signin(nome, login, pswd);
+                console.log('hey')
+                console.log(response)
+                switch (response) {
+                    case 409:
+                        Toast.show('login já existe')
+                        break;
+                    case 201:
+                        navigation.navigate('Notas');
+                    default:
+                        console.log('deu ruim');
+                        break;
+                }
+
+            } catch (error) {
+                console.log(error)
+            }
         }
     }
 
-    const showAlert = (OK) => {
-        if (!OK) return setAlerta('mínimo de 4 caracteres')
-        if (OK) return setAlerta('')
+    const showAlert = (OK, alertFunc, message) => {
+        if (!OK) return alertFunc(message);
+        else return alertFunc('');
     }
 
     return (
         <KeyboardAvoidingView style={styles.container} behavior='padding'>
-            <Text style={styles.hint}>{alerta}</Text>
             <TextInput
                 onChange={e => {
                     setNome(e.nativeEvent.text);
-                    showAlert(minLength(nome));
+                    showAlert(minLength(nome), setAlertaNome, ALERTA_CARACTERES);
                 }}
                 style={styles.input}
                 placeholder='nome' />
+            <Text style={styles.hint}>{alertaNome}</Text>
             <TextInput
                 onChange={e => {
                     setLogin(e.nativeEvent.text)
-                    showAlert(minLength(login));
+                    showAlert(minLength(login), setAlertaLogin, ALERTA_CARACTERES);
                 }}
                 style={styles.input}
                 placeholder='login' />
+            <Text style={styles.hint}>{alertaLogin}</Text>
             <TextInput
                 onChange={e => {
                     setPswd(e.nativeEvent.text)
-                    showAlert(minLength(pswd));
+                    showAlert(minLength(pswd), setAlertaPswd, ALERTA_PSWD);
                 }}
                 style={styles.input}
                 secureTextEntry={true}
                 placeholder='senha' />
+            <Text style={styles.hint}>{alertaPswd}</Text>
             <TextInput
                 onChange={e => {
                     setPswdConfirm(e.nativeEvent.text)
-                    
+                    showAlert(equals(pswd, pswdConfirm), setAlertaPswdConfirm, ALERTA_PSWD);
                 }}
                 style={styles.input}
                 secureTextEntry={true}
                 placeholder='confirme senha' />
+            <Text style={styles.hint}>{alertaPswdConfirm}</Text>
             <TouchableOpacity
                 onPress={trySignin}
                 style={{ width: '70%' }}
@@ -85,7 +107,6 @@ const styles = StyleSheet.create({
         borderColor: '#fff',
         fontSize: 24,
         height: 50,
-        marginBottom: 20,
         paddingLeft: '5%',
         width: '70%',
     },

@@ -6,8 +6,8 @@ module.exports = {
     login: async (login, pswd) => {
         try {
             const response = await axios.post(config.LOGIN_URL, {
-                pswd: pswd.trim(),
-                login: login.trim(),
+                pswd: '1134',//pswd.trim(),
+                login: 'neuyer',//login.trim(),
             });
             const token = response.data.token;
             await SecureStore.store_token(config.STORED_TOKEN, token);
@@ -21,7 +21,6 @@ module.exports = {
     },
     signin: async (nome, login, pswd) => {
         try {
-            console.log('entrou');
             const response = await axios.post(config.SIGNIN_URL, {
                 nome: nome.trim(),
                 login: login.trim(),
@@ -29,11 +28,11 @@ module.exports = {
             });
             const token = response.data.token;
             await SecureStore.store_token(config.STORED_TOKEN, token);
-            return await SecureStore.get_token(config.STORED_TOKEN);
+            return response.status;
 
         } catch (error) {
             console.log(error)
-            return null;
+            return error.response.status;
         }
     },
 }

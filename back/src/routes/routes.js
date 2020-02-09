@@ -15,9 +15,9 @@ routes.get('/notas/:id', Verify.verify, NotasController.findById);
 
 routes.post('/notas', Verify.verify, NotasController.create);
 
-routes.patch('/notas/:id', Verify.verify, NotasController.update);
+routes.put('/notas/:id', Verify.verify, NotasController.update);
 
-routes.delete('/notas', Verify.verify, NotasController.delete);
+routes.delete('/notas/:id', Verify.verify, NotasController.delete);
 
 routes.post('/signin', ADMController.signIn);
 

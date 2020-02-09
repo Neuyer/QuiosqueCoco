@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     },
     touchable: {
         borderRadius: 5,
-        backgroundColor: '#3cabde',
+        backgroundColor: '#000',
         borderColor: '#fff',
         color: '#fff',
         fontSize: 24,
