@@ -43,8 +43,6 @@ function NovaNota({ navigation }) {
     }
 
     const showDialog = () => {
-        console.log('entrou');
-        console.log(dialogVisible);
         if (!dialogVisible) setDialogVisible(true)
     }
 

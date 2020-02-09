@@ -5,7 +5,7 @@ module.exports = {
         try {
             await SecureStore.setItemAsync(STORED_TOKEN, token);
         } catch (error) {
-            console.error(error);
+            console.log(error);
         }
     },
     get_token: async (STORED_TOKEN) => {
@@ -13,7 +13,7 @@ module.exports = {
             const token = await SecureStore.getItemAsync(STORED_TOKEN);
             return token;
         } catch (error) {
-            console.error(error)
+            console.log(error)
         }
     }
 }

@@ -23,8 +23,6 @@ function SignIn({ navigation }) {
         if (checkForm([nome, login, pswd]) && equals(pswd, pswdConfirm)) {
             try {
                 const response = await Loginservice.signin(nome, login, pswd);
-                console.log('hey')
-                console.log(response)
                 switch (response) {
                     case 409:
                         Toast.show('login já existe')

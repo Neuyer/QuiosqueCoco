@@ -20,8 +20,6 @@ function NotaEdit(route) {
 
     const data = nota.data.split('T')[0];
     const showDialog = () => {
-        console.log('entrou');
-        console.log(dialogVisible);
         if (!dialogVisible) setDialogVisible(true)
     }
 
@@ -37,7 +35,7 @@ function NotaEdit(route) {
                 case 404:
                     console.log('nota não encontrada')
                 case 200:
-                    console.log('Atualiazada')               
+                    console.log('Atualizada')               
                     route.navigation.goBack()
                     break;
                 default:
